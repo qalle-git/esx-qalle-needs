@@ -17,10 +17,6 @@
 
 3) Add this into the esx_basicneeds for bars:
 
-*Bars*
-
-4)
-
 ```lua
 	--For Shit Bars
 	TriggerEvent('esx_status:registerStatus', 'shit', 1000000, '#663300', -- amarelo
