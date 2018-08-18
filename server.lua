@@ -9,7 +9,7 @@ AddEventHandler('esx-qalle-needs:sync', function(ped, need, sex)
 end)
 
 RegisterServerEvent('esx-qalle-needs:add')
-AddEventHandler('esx-qalle-needs:addt', function(source, thingy, amount)
+AddEventHandler('esx-qalle-needs:add', function(source, thingy, amount)
   local xPlayer = ESX.GetPlayerFromId(source)
 
   TriggerClientEvent('esx_status:add', source, thingy, amount)
