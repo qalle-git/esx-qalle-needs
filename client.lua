@@ -10,7 +10,7 @@ end)
 
 RegisterCommand('pee', function()
     TriggerEvent('esx_status:getStatus', 'pee', function(status)
-        if status.val > 200000 and not peeing then
+        if status.val < 200000 and not peeing then
             ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
                 --checks female or male
                 if skin.sex == 0 then
@@ -25,7 +25,7 @@ end, false)
 
 RegisterCommand('poop', function()
     TriggerEvent('esx_status:getStatus', 'poop', function(status)
-        if status.val > 200000 and not peeing then
+        if status.val < 200000 and not peeing then
             TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'water')
             print('poop')
         else
