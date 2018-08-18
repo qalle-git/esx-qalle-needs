@@ -19,6 +19,8 @@ RegisterCommand('pee', function()
                     TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
                 end
             end)
+        else
+            ESX.ShowNotification('Du är ej pissnödig')
         end
     end)
 end, false)
