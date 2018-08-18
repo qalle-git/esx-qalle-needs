@@ -29,7 +29,6 @@ RegisterCommand('poop', function()
     TriggerEvent('esx_status:getStatus', 'shit', function(status)
         if status.val < 200000 and not peeing then
             TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
-            print('poop')
         else
             ESX.ShowNotification('Du är ej skitnödig')
         end
