@@ -44,8 +44,6 @@ AddEventHandler('esx-qalle-needs:syncCL', function(ped, need, sex)
     end
 end)
 
-loc
-local pooping = false
 
 function Pee(ped, sex)
     local Player = ped
@@ -133,8 +131,6 @@ function Poop(ped)
         Citizen.Wait(0)
     end
 
-    pooping = true
-
     SetPtfxAssetNextCall(particleDictionary)
 
     --gets bone on specified ped
@@ -151,8 +147,6 @@ function Poop(ped)
     Wait(3500)
     effect2 = StartParticleFxLoopedOnPedBone(particleName, PlayerPed, 0.0, 0.0, -0.6, 0.0, 0.0, 20.0, bone, 2.0, false, false, false)
     Wait(1000)
-
-    pooping = false
 
     StopParticleFxLooped(effect, 0)
     Wait(10)
