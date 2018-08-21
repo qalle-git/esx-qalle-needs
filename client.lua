@@ -10,7 +10,7 @@ end)
 
 RegisterCommand('pee', function()
     TriggerEvent('esx_status:getStatus', 'pee', function(status)
-        if status.val < 200000 and not peeing then
+        if status.val < 200000 then
             ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
                 --checks female or male
                 if skin.sex == 0 then
@@ -27,7 +27,7 @@ end, false)
 
 RegisterCommand('poop', function()
     TriggerEvent('esx_status:getStatus', 'shit', function(status)
-        if status.val < 200000 and not peeing then
+        if status.val < 200000 then
             TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
             print('poop')
         else
@@ -45,7 +45,7 @@ AddEventHandler('esx-qalle-needs:syncCL', function(ped, need, sex)
     end
 end)
 
-local peeing = false
+loc
 local pooping = false
 
 function Pee(ped, sex)
@@ -76,7 +76,6 @@ function Pee(ped, sex)
     end
 
     if sex == 'male' then
-        peeing = true
 
         SetPtfxAssetNextCall(particleDictionary)
 
@@ -91,11 +90,9 @@ function Pee(ped, sex)
         local effect = StartParticleFxLoopedOnPedBone(particleName, PlayerPed, 0.0, 0.0, -0.1, -90.0, 0.0, 20.0, bone, 2.0, false, false, false)
 
         Wait(3500)
-        peeing = false
 
         StopParticleFxLooped(effect, 0)
     else
-        peeing = true
 
         SetPtfxAssetNextCall(particleDictionary)
 
@@ -110,7 +107,6 @@ function Pee(ped, sex)
         local effect = StartParticleFxLoopedOnPedBone(particleName, PlayerPed, 0.0, 0.0, -0.55, 0.0, 0.0, 20.0, bone, 2.0, false, false, false)
 
         Wait(3500)
-        peeing = false
 
         Citizen.Wait(100)
         StopParticleFxLooped(effect, 0)
