@@ -1,38 +1,57 @@
 ESX                             = nil
 
+Config = {
+    StatusBars = false
+}
+
+
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 		Citizen.Wait(1)
 	end
-  	PlayerData = ESX.GetPlayerData()
 end)
 
+
 RegisterCommand('pee', function()
-    TriggerEvent('esx_status:getStatus', 'pee', function(status)
-        if status.val < 200000 then
-            ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
-                --checks female or male
-                if skin.sex == 0 then
+    if Config.StatusBars then
+        TriggerEvent('esx_status:getStatus', 'pee', function(status)
+            if status.val < 200000 then
+                local hashSkin = GetHashKey("mp_m_freemode_01")
+
+                if GetEntityModel(PlayerPedId()) == hashSkin then
                     TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'male')
                 else
                     TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
                 end
-            end)
+
+            else
+                ESX.ShowNotification('You dont have to pee')
+            end
+        end)
+    else
+        local hashSkin = GetHashKey("mp_m_freemode_01")
+
+        if GetEntityModel(PlayerPedId()) == hashSkin then
+            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'male')
         else
-            ESX.ShowNotification('Du är ej pissnödig')
+            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
         end
-    end)
+    end
 end, false)
 
 RegisterCommand('poop', function()
-    TriggerEvent('esx_status:getStatus', 'shit', function(status)
-        if status.val < 200000 then
-            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
-        else
-            ESX.ShowNotification('Du är ej skitnödig')
-        end
-    end)
+    if Config.StatusBars then
+        TriggerEvent('esx_status:getStatus', 'shit', function(status)
+            if status.val < 200000 then
+                TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
+            else
+                ESX.ShowNotification('Du är ej skitnödig')
+            end
+        end)
+    else
+        TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
+    end
 end, false)
 
 RegisterNetEvent('esx-qalle-needs:syncCL')
