@@ -11,6 +11,6 @@ RegisterServerEvent('esx-qalle-needs:add')
 AddEventHandler('esx-qalle-needs:add', function(source, thingy, amount)
   local xPlayer = ESX.GetPlayerFromId(source)
 
-  --TriggerClientEvent('esx_status:add', source, thingy, amount)
+  TriggerClientEvent('esx_status:add', source, thingy, amount)
 
 end)
