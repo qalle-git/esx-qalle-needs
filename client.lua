@@ -1,7 +1,9 @@
 ESX                             = nil
 
 Config = {
-    StatusBars = false
+    Commands = false,
+    StatusBars = false,
+    Key = 166
 }
 
 
@@ -12,11 +14,91 @@ Citizen.CreateThread(function()
 	end
 end)
 
+if Config.Commands then
 
-RegisterCommand('pee', function()
-    if Config.StatusBars then
-        TriggerEvent('esx_status:getStatus', 'pee', function(status)
-            if status.val < 200000 then
+    RegisterCommand('pee', function()
+        if Config.StatusBars then
+            TriggerEvent('esx_status:getStatus', 'pee', function(status)
+                if status.val < 200000 then
+                    local hashSkin = GetHashKey("mp_m_freemode_01")
+
+                    if GetEntityModel(PlayerPedId()) == hashSkin then
+                        TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'male')
+                    else
+                        TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
+                    end
+
+                else
+                    ESX.ShowNotification('You dont have to pee')
+                end
+            end)
+        else
+            local hashSkin = GetHashKey("mp_m_freemode_01")
+
+            if GetEntityModel(PlayerPedId()) == hashSkin then
+                TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'male')
+            else
+                TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
+            end
+        end
+    end, false)
+
+    RegisterCommand('poop', function()
+        if Config.StatusBars then
+            TriggerEvent('esx_status:getStatus', 'shit', function(status)
+                if status.val < 200000 then
+                    TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
+                else
+                    ESX.ShowNotification('Du är ej skitnödig')
+                end
+            end)
+        else
+            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
+        end
+    end, false)
+else
+    Citizen.CreateThread(function()
+        while true do
+            Citizen.Wait(5)
+            if IsControlJustReleased(0, Config.Key) then
+                OpenNeedsMenu()
+            end
+        end
+    end)
+end
+
+function OpenNeedsMenu()
+    ESX.UI.Menu.Open(
+        'default', GetCurrentResourceName(), 'esx-qalle-needsmenu',
+        {
+            title    = 'Needs Menu',
+            align    = 'top-right',
+            elements = { 
+                { label = 'Pee', value = 'pee' },
+                { label = 'Poop', value = 'poop' }
+            }
+        },
+    function(data, menu)
+        local value = data.current.value
+
+        if value == 'pee' then
+            menu.close()
+            if Config.StatusBars then
+                TriggerEvent('esx_status:getStatus', 'pee', function(status)
+                    if status.val < 200000 then
+                        local hashSkin = GetHashKey("mp_m_freemode_01")
+
+                        if GetEntityModel(PlayerPedId()) == hashSkin then
+                            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'male')
+                        else
+                            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
+                        end
+
+                    else
+                        ESX.ShowNotification('You don\'t have to pee')
+                    end
+                end)
+            else
                 local hashSkin = GetHashKey("mp_m_freemode_01")
 
                 if GetEntityModel(PlayerPedId()) == hashSkin then
@@ -24,35 +106,28 @@ RegisterCommand('pee', function()
                 else
                     TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
                 end
-
-            else
-                ESX.ShowNotification('You dont have to pee')
             end
-        end)
-    else
-        local hashSkin = GetHashKey("mp_m_freemode_01")
 
-        if GetEntityModel(PlayerPedId()) == hashSkin then
-            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'male')
-        else
-            TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'pee', 'female')
-        end
-    end
-end, false)
-
-RegisterCommand('poop', function()
-    if Config.StatusBars then
-        TriggerEvent('esx_status:getStatus', 'shit', function(status)
-            if status.val < 200000 then
+        elseif value == 'poop' then
+            menu.close()
+            if Config.StatusBars then
+                TriggerEvent('esx_status:getStatus', 'shit', function(status)
+                    if status.val < 200000 then
+                        TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
+                    else
+                        ESX.ShowNotification('You don\'t have to poop')
+                    end
+                end)
+            else
                 TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
-            else
-                ESX.ShowNotification('Du är ej skitnödig')
             end
-        end)
-    else
-        TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
-    end
-end, false)
+        end
+
+    end,
+    function(data, menu)
+        menu.close()
+    end)
+end
 
 RegisterNetEvent('esx-qalle-needs:syncCL')
 AddEventHandler('esx-qalle-needs:syncCL', function(ped, need, sex)
@@ -70,8 +145,8 @@ function Pee(ped, sex)
 
     local particleDictionary = "core"
     local particleName = "ent_amb_peeing"
-    local animDictionary = 'missbigscore1switch_trevor_piss'
-    local animName = 'piss_loop'
+    local animDictionary = 'misscarsteal2peeing'
+    local animName = 'peeing_loop'
 
     RequestNamedPtfxAsset(particleDictionary)
 
@@ -97,17 +172,18 @@ function Pee(ped, sex)
 
         TriggerServerEvent('esx-qalle-needs:add', GetPlayerServerId(Player), 'pee', 1000000)
 
-        bone   = GetPedBoneIndex(PlayerPed, 11816)
+        local bone = GetPedBoneIndex(PlayerPed, 11816)
 
         local heading = GetEntityPhysicsHeading(PlayerPed)
 
         TaskPlayAnim(PlayerPed, animDictionary, animName, 8.0, -8.0, -1, 0, 0, false, false, false)
 
-        local effect = StartParticleFxLoopedOnPedBone(particleName, PlayerPed, 0.0, 0.0, -0.1, -90.0, 0.0, 20.0, bone, 2.0, false, false, false)
-
+        local effect = StartParticleFxLoopedOnPedBone(particleName, PlayerPed, 0.0, 0.2, 0.0, -140.0, 0.0, 0.0, bone, 2.5, false, false, false)
+        StartParticleFxLoopedOnPedBone(effectName, ped, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis)
         Wait(3500)
 
         StopParticleFxLooped(effect, 0)
+        ClearPedTasks(PlayerPed)
     else
 
         SetPtfxAssetNextCall(particleDictionary)
