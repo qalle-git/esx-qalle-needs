@@ -1,7 +1,5 @@
 # esx-qalle-needs
 
-``jsfour-toilet as base.``
-
 [REQUIREMENTS]
   
 * ESX Support
@@ -17,9 +15,11 @@
 
 3) Add this into the esx_basicneeds for bars:
 
+	If you're lazy you could download my edited version of basicneeds here ``https://github.com/qalle-fivem/esx_basicneeds`` 
+
 ```lua
 	--For Shit Bars
-	TriggerEvent('esx_status:registerStatus', 'shit', 1000000, '#663300', -- amarelo
+	TriggerEvent('esx_status:registerStatus', 'shit', 1000000, '#663300',
 		function(status)
 			return true
 		end,
@@ -28,7 +28,7 @@
 	end)
 	
 	--For Pee Bars
-	TriggerEvent('esx_status:registerStatus', 'pee', 1000000, '#FFFF00', -- amarelo
+	TriggerEvent('esx_status:registerStatus', 'pee', 1000000, '#FFFF00',
 		function(status)
 			return true
 		end,
@@ -36,3 +36,4 @@
 		status.remove(40)
 	end)
 ```
+
