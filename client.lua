@@ -86,6 +86,7 @@ function OpenNeedsMenu()
             if Config.StatusBars then
                 TriggerEvent('esx_status:getStatus', 'pee', function(status)
                     if status.val < 200000 then
+                        TriggerServerEvent('esx-qalle-needs:add', 'pee', 1000000)
                         local hashSkin = GetHashKey("mp_m_freemode_01")
 
                         if GetEntityModel(PlayerPedId()) == hashSkin then
@@ -113,6 +114,7 @@ function OpenNeedsMenu()
             if Config.StatusBars then
                 TriggerEvent('esx_status:getStatus', 'shit', function(status)
                     if status.val < 200000 then
+                        TriggerServerEvent('esx-qalle-needs:add', 'shit', 1000000)
                         TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
                     else
                         ESX.ShowNotification('You don\'t have to poop')
@@ -170,8 +172,6 @@ function Pee(ped, sex)
 
         SetPtfxAssetNextCall(particleDictionary)
 
-        TriggerServerEvent('esx-qalle-needs:add', GetPlayerServerId(Player), 'pee', 1000000)
-
         local bone = GetPedBoneIndex(PlayerPed, 11816)
 
         local heading = GetEntityPhysicsHeading(PlayerPed)
@@ -187,8 +187,6 @@ function Pee(ped, sex)
     else
 
         SetPtfxAssetNextCall(particleDictionary)
-
-        TriggerServerEvent('esx-qalle-needs:add', GetPlayerServerId(Player), 'pee', 1000000)
 
         bone = GetPedBoneIndex(PlayerPed, 11816)
 
@@ -230,9 +228,6 @@ function Poop(ped)
 
     --gets bone on specified ped
     bone = GetPedBoneIndex(PlayerPed, 11816)
-
-    --adds to status
-    TriggerServerEvent('esx-qalle-needs:add', GetPlayerServerId(Player), 'poop', 1000000)
 
     --animation
     TaskPlayAnim(PlayerPed, animDictionary, animName, 8.0, -8.0, -1, 0, 0, false, false, false)
