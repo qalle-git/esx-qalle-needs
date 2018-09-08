@@ -179,7 +179,7 @@ function Pee(ped, sex)
         TaskPlayAnim(PlayerPed, animDictionary, animName, 8.0, -8.0, -1, 0, 0, false, false, false)
 
         local effect = StartParticleFxLoopedOnPedBone(particleName, PlayerPed, 0.0, 0.2, 0.0, -140.0, 0.0, 0.0, bone, 2.5, false, false, false)
-        
+
         Wait(3500)
 
         StopParticleFxLooped(effect, 0)
@@ -200,6 +200,7 @@ function Pee(ped, sex)
 
         Citizen.Wait(100)
         StopParticleFxLooped(effect, 0)
+        ClearPedTasks(PlayerPed)
     end
 end
 
