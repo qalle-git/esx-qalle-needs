@@ -9,5 +9,6 @@ end)
 
 RegisterServerEvent('esx-qalle-needs:add')
 AddEventHandler('esx-qalle-needs:add', function(need, amount)
-  TriggerClientEvent('esx_status:add', source, need, amount)
+  local src = tonumber(source)
+  TriggerClientEvent('esx_status:add', src, need, amount)
 end)
