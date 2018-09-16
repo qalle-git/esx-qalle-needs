@@ -14,6 +14,11 @@ Citizen.CreateThread(function()
 	end
 end)
 
+RegisterNetEvent('esx-qalle-needs:openMenu')
+AddEventHandler('esx-qalle-needs:openMenu', function()
+    OpenNeedsMenu()
+end)
+
 if Config.Commands then
 
     RegisterCommand('pee', function()
