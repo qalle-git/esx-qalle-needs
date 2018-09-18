@@ -25,6 +25,7 @@ if Config.Commands then
         if Config.StatusBars then
             TriggerEvent('esx_status:getStatus', 'pee', function(status)
                 if status.val < 200000 then
+                    TriggerServerEvent('esx-qalle-needs:add', 'pee', 1000000)
                     local hashSkin = GetHashKey("mp_m_freemode_01")
 
                     if GetEntityModel(PlayerPedId()) == hashSkin then
@@ -52,6 +53,7 @@ if Config.Commands then
         if Config.StatusBars then
             TriggerEvent('esx_status:getStatus', 'shit', function(status)
                 if status.val < 200000 then
+                    TriggerServerEvent('esx-qalle-needs:add', 'shit', 1000000)
                     TriggerServerEvent('esx-qalle-needs:sync', GetPlayerServerId(PlayerId()), 'poop')
                 else
                     ESX.ShowNotification('Du är ej skitnödig')
